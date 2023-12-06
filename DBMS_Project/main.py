@@ -18,3 +18,13 @@ while(1==1):
     if(ques != "d" and ques != "w"): print("Invalid input")
     elif(ques == "d"): cash_deposit()
     else: cash_withdraw()
+
+while(1==1):
+    end = input("Do you want to check balance? (y/n)")
+    if end == "n": break
+    accountNumber = input("Enter the account number: ")
+    query = check_balance_query(accountNumber)
+    result = fetch_query(query)
+    print(f"balance: {result['balance']}")
+    
+    

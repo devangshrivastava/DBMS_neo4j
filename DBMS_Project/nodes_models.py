@@ -1,5 +1,5 @@
-def create_customer(name, accountNumber, accountID):
-    return f"CREATE (:AccountHolder {{accountName: '{name}'}})-[:HAS_ACCOUNT]->(:DepositAccount {{accountID: {accountID}, accountNumber:{accountNumber}}});"
+def create_customer(name, accountNumber, accountID, balance):
+    return f"CREATE (:AccountHolder {{accountName: '{name}'}})-[:HAS_ACCOUNT]->(:DepositAccount {{accountID: {accountID}, accountNumber:{accountNumber}, balance:{balance}}});"
 
 def create_transaction(amount, date, transaction_id):
     return f"CREATE (:Transaction {{amount: {amount}, date: '{date}', transactionID : '{transaction_id}'}})" 

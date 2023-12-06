@@ -12,12 +12,12 @@ def customer():
     name = input("Enter the name of the customer: ")
     ques2 = input("Do you want to add internal account or external? (i/e)")
     accountID = input("Enter the account ID: ")
+    accountNumber = input("Enter the account number: ")
     query = ""
+    balance = 1000
     if(ques2 == "i"):
-        accountNumber = input("Enter the account number: ")
-        query = create_customer(name,accountNumber,accountID) # create_customer(name, accountNumber, accountID)
+        query = create_customer(name,accountNumber,accountID,balance) # create_customer(name, accountNumber, accountID)
     else:
-        accountNumber = input("Enter the account number: ")
         country_name = input("Enter the country name: ")
         risk_score = input("Enter the risk score: ")
         iban_code = input("Enter the IBAN code: ")
@@ -71,3 +71,4 @@ def cash_withdraw():
     print(f"cash_transaction {transaction_id} created")
 
     
+

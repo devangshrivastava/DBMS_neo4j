@@ -14,7 +14,19 @@ def run_query(query):
     with GraphDatabase.driver(uri, auth=(username, password)) as driver:
         # Start a session
         with driver.session() as session:
-            session.run(query)
+            a = session.run(query)
             print("Query executed")
-       
-    
+            
+
+def fetch_query(query): 
+    with GraphDatabase.driver(uri, auth=(username, password)) as driver:
+        # Start a session
+        with driver.session() as session:
+            result = session.run(query)
+            account_properties = dict(result.single()["account"].items())
+            
+            # Print the dictionary            
+            print("Query executed")
+
+            return account_properties
+            
