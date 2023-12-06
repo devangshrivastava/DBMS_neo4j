@@ -1,4 +1,7 @@
 from functions import *
+from queries import *
+import pandas as pd
+
 
 while(1==1):
     end = input("Do you want to add another customer? (y/n)")
@@ -24,7 +27,10 @@ while(1==1):
     if end == "n": break
     accountNumber = input("Enter the account number: ")
     query = check_balance_query(accountNumber)
-    result = fetch_query(query)
+    result = fetch_query1(query)
     print(f"balance: {result['balance']}")
     
-    
+
+ques = input("Do you want to run a query1? (y/n)")
+if(ques == "y"):
+    query1()

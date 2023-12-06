@@ -2,7 +2,7 @@ from nodes_models import *
 from relation_models import *
 from connection import *
 from neo4j.exceptions import ConstraintError
-from datetime import date
+from datetime import date,  datetime
 
 
 today_date = str(date.today())
@@ -37,7 +37,9 @@ def transaction():
     sender_id = input("Enter the sender's account Number: ")
     receiver_id = input("Enter the receiver's account Number: ")
     amount = input("Enter the amount of the transaction: ")
-    transaction_id = input("Enter the transaction ID: ")
+    current_time = datetime.now()
+    a = str(current_time)
+    transaction_id  = int(a.replace(" ", "").replace(":", "").replace("-", "")[0:14])
     query = ""
     if(ques1 == "i"): query = sends_internal(amount, today_date, transaction_id,  sender_id, receiver_id,)
     else: query = sends_external(amount, today_date, transaction_id,  sender_id, receiver_id,)
@@ -57,7 +59,9 @@ def transaction():
 def cash_deposit():
     cash = input("Enter the amount of cash deposited: ")
     accountNumber = input("Enter the account number: ")
-    transaction_id = input("Enter the transaction ID: ")
+    current_time = datetime.now()
+    a = str(current_time)
+    transaction_id  = int(a.replace(" ", "").replace(":", "").replace("-", "")[0:14])
     query = cash_deposit_query(cash, today_date, transaction_id, accountNumber)
     run_query(query)
     print(f"cash_transaction {transaction_id} created")
@@ -65,7 +69,9 @@ def cash_deposit():
 def cash_withdraw():
     cash = input("Enter the amount of cash withdraw: ")
     accountNumber = input("Enter the account number: ")
-    transaction_id = input("Enter the transaction ID: ")
+    current_time = datetime.now()
+    a = str(current_time)
+    transaction_id  = int(a.replace(" ", "").replace(":", "").replace("-", "")[0:14])
     query = cash_deposit_query(cash, today_date, transaction_id, accountNumber)
     run_query(query)
     print(f"cash_transaction {transaction_id} created")

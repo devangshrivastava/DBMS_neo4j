@@ -3,6 +3,7 @@ from neo4j.exceptions import ServiceUnavailable
 from nodes_models import *
 from relation_models import *
 from datetime import date
+import pandas as pd
 
 uri = "bolt://localhost:7687"
 username = "neo4j"
@@ -18,7 +19,7 @@ def run_query(query):
             print("Query executed")
             
 
-def fetch_query(query): 
+def fetch_query1(query): 
     with GraphDatabase.driver(uri, auth=(username, password)) as driver:
         # Start a session
         with driver.session() as session:
@@ -30,3 +31,15 @@ def fetch_query(query):
 
             return account_properties
             
+
+def run_main_query1(query):
+    with GraphDatabase.driver(uri, auth=(username, password)) as driver:
+        # Start a session
+        with driver.session() as session:
+            result = session.run(query)
+
+            # Convert result to a list of dictionaries
+            data = [record.data() for record in result]
+            print("Query executed")
+            df = pd.DataFrame(data)
+            print(df)
