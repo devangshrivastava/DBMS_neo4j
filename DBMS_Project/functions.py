@@ -40,18 +40,34 @@ def customer():
         print("Account number already exists")    
         
 def transaction():
-    ques1 = input("Do you want to add internal transaction or external? (i/e)")
-    sender_id = input("Enter the sender's account Number: ")
-    receiver_id = input("Enter the receiver's account Number: ")
+    ques1 = ""
+    sender_account_number = input("Enter the sender's account Number: ")
+    receiver_account_number = input("Enter the receiver's account Number: ")
     amount = input("Enter the amount of the transaction: ")
     current_time = datetime.now()
     a = str(current_time)
     transaction_id  = int(a.replace(" ", "").replace(":", "").replace("-", "")[0:14])
     query = ""
-    if(ques1 == "i"): query = sends_internal(amount, today_date, transaction_id,  sender_id, receiver_id,)
-    else: query = sends_external(amount, today_date, transaction_id,  sender_id, receiver_id,)
+    # print(str(sender_account_number)[0:5], str(receiver_account_number)[0:5])
+    # print("h1")
+    if(str(sender_account_number)[0:5] == "10000" and str(receiver_account_number)[0:5] == "10000"):
+        query = sends_internal(amount, today_date, transaction_id,  sender_account_number, receiver_account_number)
+        print("internal --> internal")
+    elif(str(sender_account_number)[0:5] == "11100" and str(receiver_account_number)[0:5] == "10000"):
+        query = recieves_external(amount, today_date, transaction_id,  sender_account_number, receiver_account_number)
+        print("external --> internal")
+    elif(str(sender_account_number)[0:5] == "10000" and str(receiver_account_number)[0:5] == "11100"):
+        query = sends_external(amount, today_date, transaction_id,  sender_account_number, receiver_account_number)
+        print("internal --> external")
+    else:
+        print("Issue in account numbers")
+        
+
+    
+
     # sends_external(amount, date, transaction_ID, accountNumber_sender, accountNumber_receiver)
     # sends_internal(amount, date, transaction_ID, accountNumber_sender, accountNumber_receiver)
+    # recieves_external(amount, date, transaction_ID, accountNumber_sender, accountNumber_receiver)
 
     try:
         run_query(query)
@@ -83,7 +99,7 @@ def cash_withdraw():
     current_time = datetime.now()
     a = str(current_time)
     transaction_id  = int(a.replace(" ", "").replace(":", "").replace("-", "")[0:14])
-    query = cash_deposit_query(cash, today_date, transaction_id, accountNumber)
+    query = cash_withdraw_query(cash, today_date, transaction_id, accountNumber)
     run_query(query)
     print(f"cash_withdraw successful")
     print("current balance: ", check_bank_balance(accountNumber))

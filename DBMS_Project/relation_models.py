@@ -1,7 +1,12 @@
 from nodes_models import *
 
 def sends_external(amount, date, transaction_ID, accountNumber_sender, accountNumber_receiver):
-    return f"MATCH (sender:DepositAccount {{accountNumber: {accountNumber_sender}}}), (receiver:ExternalAccount {{accountNumber: {accountNumber_receiver}}}) CREATE (sender)-[:WITHDRAWALS]->(transaction:Transaction:Wire {{amount: {amount}, date: date('{date}'), transactionID: {transaction_ID}}})-[:RECEIVES_WIRE]->(receiver) SET sender.balance = sender.balance - {amount} SET receiver.balance = receiver.balance + {amount}"
+    return f"MATCH (sender:DepositAccount {{accountNumber: {accountNumber_sender}}}), (receiver:ExternalAccount {{accountNumber: {accountNumber_receiver}}}) CREATE (sender)-[:WITHDRAWALS]->(transaction:Transaction:Wire {{amount: {amount}, date: date('{date}'), transactionID: {transaction_ID}}})-[:RECEIVES_WIRE]->(receiver) SET sender.balance = sender.balance - {amount} SET receiver.balance = receiver.balance + {amount} "
+
+def recieves_external(amount, date, transaction_ID, accountNumber_sender, accountNumber_receiver):
+    return f"MATCH (sender:ExternalAccount {{accountNumber: {accountNumber_sender}}}), (receiver:DepositAccount {{accountNumber: {accountNumber_receiver}}}) CREATE (receiver)-[:DEPOSITS]->(transaction:Transaction:Wire {{amount: {amount}, date: date('{date}'), transactionID: {transaction_ID}}})-[:SENDS_WIRE]->(sender) SET sender.balance = sender.balance - {amount} SET receiver.balance = receiver.balance + {amount}"
+
+
 
 def sends_internal(amount, date, transaction_ID, accountNumber_sender, accountNumber_receiver):
     transaction_ID2 = int(transaction_ID) + 1

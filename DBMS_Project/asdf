@@ -1,0 +1,24 @@
+WITH date('2023-12-10') as curDate
+WITH curDate, curDate - duration({days: 35}) as curDate35
+MATCH p=(cu1)-[:HAS_ACCOUNT]->(da1:DepositAccount)-[:WITHDRAWALS]->(txn1)
+      -[:RECEIVES_WIRE]->(ext:ExternalAccount)<-[:SENDS_WIRE]-(txn2)
+      <-[:DEPOSITS]-(da2:DepositAccount)<-[:HAS_ACCOUNT]-(cu2)
+WHERE id(da1)<>id(da2)
+ AND txn1.date <= curDate
+ AND txn1.date >= curDate35
+ AND txn2.date>=txn1.date
+ AND duration.inDays(txn1.date,txn2.date).days < 7
+//  AND txn2.amount > abs(txn1.amount) * 0.85
+ AND txn2.amount < abs(txn1.amount)
+ AND abs(txn1.amount) > 1000.0
+ WITH cu1.customerID as sendAccountID, cu1.accountName as sendAccountName,
+ sum(abs(txn1.amount)) as amtSent, count(txn1) as numXmit,
+ ext.accountID as nextAccountID, ext.accountName as nextAccountName,
+ sum(abs(txn2.amount)) as amtRcv, count(txn2) as numRcv,
+ cu2.customerID as rcvAccountID, cu2.accountName as rcvAccountName
+ WITH sum(amtSent) as totalSent, sum(numXmit) as totalTxns,
+ sum(amtRcv) as totalRcv, sum(numRcv) as numRcv,
+ rcvAccountID, rcvAccountName
+ WHERE numRcv > 2 AND totalRcv > 6500
+ RETURN totalSent, totalTxns, totalRcv, numRcv, rcvAccountID, rcvAccountName
+ ORDER BY totalSent DESC
