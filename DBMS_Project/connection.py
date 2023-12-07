@@ -37,7 +37,6 @@ def run_main_query1(query):
         # Start a session
         with driver.session() as session:
             result = session.run(query)
-
             # Convert result to a list of dictionaries
             data = [record.data() for record in result]
             print("Query executed")

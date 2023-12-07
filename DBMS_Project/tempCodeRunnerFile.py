@@ -1,2 +1,1 @@
-t:
-        print(record)
+query = check_balance_query(accountNumber)
